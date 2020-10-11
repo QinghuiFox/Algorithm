@@ -1,0 +1,71 @@
+#
+create = {}
+create["A"] = {}
+create["A"]["B"] = 5
+create["A"]["C"] = 2
+
+create["B"] = {}
+create["B"]["D"] = 4
+create["B"]["E"] = 2
+
+create["C"] = {}
+create["C"]["B"] = 8
+create["C"]["E"] = 7
+
+create["D"] = {}
+create["D"]["E"] = 6
+create["D"]["F"] = 3
+
+create["E"] = {}
+create["E"]["F"] = 1
+
+create["F"] = {}
+
+#
+inf = float("inf")
+costs = {}
+costs["B"] = 5
+costs["C"] = 2
+costs["D"] = inf
+costs["E"] = inf
+costs["F"] = inf
+
+#
+relation = {}
+relation["B"] = ["A","C"]
+relation["C"] = "A"
+relation["D"] = "B"
+relation["E"] = ["B","C","D"]
+relation["F"] = ""
+
+processed = []
+
+def getlowcost(list):
+    lowest_cost = float("inf")
+    lowest_node = None
+    for node in costs:
+        #print(node)
+        cost = costs[node]
+        #print(cost)
+        if cost < lowest_cost and node not in processed:
+            lowest_cost = cost
+            lowest_node = node
+    return lowest_node
+
+node = getlowcost(costs)
+
+while node:
+    cost = costs[node]
+    neib = create[node]
+    #print(neib)
+    for i in neib.keys():
+        #print(i)
+        newcost = cost + neib[i]
+        #print(neib[i])
+        if costs[i] > newcost:
+            costs[i] = newcost
+            relation[i] = node
+    processed.append(node)
+    node = getlowcost(costs)
+
+print(costs)
